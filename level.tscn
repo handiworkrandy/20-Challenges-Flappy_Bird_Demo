@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3 uid="uid://b80d1rb1pg6et"]
+
+[ext_resource type="Script" path="res://level.gd" id="1_fqrl3"]
+[ext_resource type="PackedScene" uid="uid://b2k6tv3qu8llt" path="res://Bird.tscn" id="1_uce40"]
+[ext_resource type="Script" path="res://SpawnedPipes.gd" id="3_tlwbm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bcban"]
+size = Vector2(1165, 23)
+
+[node name="Level" type="Node2D"]
+script = ExtResource("1_fqrl3")
+
+[node name="ScoreLabel" type="Label" parent="."]
+offset_left = 510.0
+offset_top = 3.0
+offset_right = 550.0
+offset_bottom = 29.0
+scale = Vector2(2, 2)
+
+[node name="Bird" parent="." instance=ExtResource("1_uce40")]
+position = Vector2(511, 282)
+motion_mode = 1
+
+[node name="Ground" type="StaticBody2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Ground"]
+offset_left = -2.0
+offset_top = 628.0
+offset_right = 1163.0
+offset_bottom = 656.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+position = Vector2(581, 640)
+shape = SubResource("RectangleShape2D_bcban")
+
+[node name="Failstate" type="Area2D" parent="Ground"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground/Failstate"]
+position = Vector2(581, 640)
+shape = SubResource("RectangleShape2D_bcban")
+
+[node name="SpawnedPipes" type="Node2D" parent="."]
+script = ExtResource("3_tlwbm")
+
+[node name="Pipe Time" type="Timer" parent="SpawnedPipes"]
+wait_time = 0.75
+autostart = true
+
+[connection signal="timeout" from="SpawnedPipes/Pipe Time" to="SpawnedPipes" method="_on_pipe_time_timeout"]

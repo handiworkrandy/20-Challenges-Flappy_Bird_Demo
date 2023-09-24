@@ -1,0 +1,81 @@
+[gd_scene load_steps=5 format=3 uid="uid://ofbj2qa4ugg1"]
+
+[ext_resource type="Script" path="res://pipes.gd" id="1_mbx0l"]
+[ext_resource type="AudioStream" uid="uid://dhcx4rtoioh57" path="res://pickupCoin.wav" id="2_jswwj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xxwmb"]
+size = Vector2(104, 373.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wf43i"]
+size = Vector2(54, 250)
+
+[node name="Pipes" type="Node2D"]
+script = ExtResource("1_mbx0l")
+
+[node name="Lower Pipe" type="StaticBody2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Lower Pipe"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -51.0
+offset_top = -149.0
+offset_right = 53.0
+offset_bottom = 224.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lower Pipe"]
+position = Vector2(0, 37.25)
+shape = SubResource("RectangleShape2D_xxwmb")
+
+[node name="Failstate" type="Area2D" parent="Lower Pipe"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Lower Pipe/Failstate"]
+position = Vector2(0, 40)
+shape = SubResource("RectangleShape2D_xxwmb")
+
+[node name="Upper Pipe" type="StaticBody2D" parent="."]
+position = Vector2(0, -589)
+
+[node name="ColorRect" type="ColorRect" parent="Upper Pipe"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -53.0
+offset_top = -186.0
+offset_right = 51.0
+offset_bottom = 187.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Upper Pipe"]
+shape = SubResource("RectangleShape2D_xxwmb")
+
+[node name="Failstate" type="Area2D" parent="Upper Pipe"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Upper Pipe/Failstate"]
+shape = SubResource("RectangleShape2D_xxwmb")
+
+[node name="Despawn" type="Timer" parent="."]
+wait_time = 4.0
+one_shot = true
+autostart = true
+
+[node name="ScoreRegion" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ScoreRegion"]
+position = Vector2(-25, -276)
+shape = SubResource("RectangleShape2D_wf43i")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_jswwj")
+volume_db = -7.235
+
+[connection signal="timeout" from="Despawn" to="." method="_on_despawn_timeout"]
+[connection signal="body_exited" from="ScoreRegion" to="." method="_on_score_region_body_exited"]
